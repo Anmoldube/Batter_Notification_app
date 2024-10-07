@@ -1,0 +1,12 @@
+{
+  "name": "battery-alert-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "battery-level": "^1.0.0",
+    "nodemailer": "^6.4.18"
+  }
+}
