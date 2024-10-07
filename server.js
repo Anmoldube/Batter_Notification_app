@@ -3,10 +3,10 @@ const nodemailer = require("nodemailer");
 
 // Define email settings
 const transporter = nodemailer.createTransport({
-  service: "gmail", // You can use other email services too, like Outlook
+  service: "gmail",
   auth: {
-    user: "dubea9514@gmail.com", // Replace with your email
-    pass: "lpgrsgseviyhteex", // Replace with your email password or app-specific password
+    user: "dubea9514@gmail.com",
+    pass: "lpgrsgseviyhteex",
   },
 });
 
@@ -16,7 +16,7 @@ const sendEmail = () => {
     from: "dubea9514@gmail.com",
     to: "anmoldube15@gmail.com",
     subject: "Low Battery Alert",
-    text: "Your battery is below 10%. Please charge it soon!",
+    text: "Your battery is at or below 20%. Please charge it soon!",
   };
 
   transporter.sendMail(mailOptions, function (error, info) {
@@ -30,17 +30,21 @@ const sendEmail = () => {
 
 // Function to check battery level
 const checkBatteryLevel = async () => {
-  const level = await batteryLevel();
-  console.log(`Current battery level: ${level * 100}%`);
+  try {
+    const level = await batteryLevel(); // Using Promises
+    console.log(`Current battery level: ${level * 100}%`);
 
-  // If battery is less than 10%, send an email
-  if (level * 100 < 40) {
-    console.log("Battery is below 10%, sending an alert...");
-    sendEmail();
+    // If battery is 20% or below, send an email
+    if (level * 100 <= 20) {
+      console.log("Battery is at or below 20%, sending an alert...");
+      sendEmail();
+    }
+  } catch (error) {
+    console.error("Error fetching battery level:", error);
   }
 };
 
-// Check battery level every 10 minutes (600000 ms)
+// Check battery level every 10 minutes
 setInterval(checkBatteryLevel, 6000); // 10 minutes
 
 // Check battery level when the script starts
